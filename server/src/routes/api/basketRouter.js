@@ -1,29 +1,29 @@
 const BasketController = require('../../controllers/basketController');
 const validateId = require('../../middlewares/validateId');
-const verifyAccessToken = require('../../middlewares/verifyAccessToken');
+const authMiddleware = require('../../middlewares/authMiddleware');
 
 const basketRouter = require('express').Router();
 
-basketRouter.get('/', BasketController.findAllBaskets);
+basketRouter.get('/', BasketController.getAllBaskets);
 basketRouter.get('/:id', validateId, BasketController.getBasketById);
 //ок ли эндпоинт
 basketRouter.get(
   '/user/:id',
   validateId,
-  verifyAccessToken,
+  authMiddleware,
   BasketController.getAllUsersBaskets
 );
-basketRouter.post('/', verifyAccessToken, BasketController.createBasket);
+basketRouter.post('/', authMiddleware, BasketController.createBasket);
 basketRouter.put(
   '/:id',
   validateId,
-  verifyAccessToken,
+  authMiddleware,
   BasketController.updateBasket
 );
 basketRouter.delete(
   '/:id',
   validateId,
-  verifyAccessToken,
+  authMiddleware,
   BasketController.deleteBasket
 );
 

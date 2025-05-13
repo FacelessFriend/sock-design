@@ -24,7 +24,7 @@ class SocksController {
       const userId = res.locals.user.id;
 
       if (id !== userId) {
-        return res.status(409).json({
+        return res.status(403).json({
           message: 'Forbidden for this user',
           data: null,
         });
@@ -112,7 +112,7 @@ class SocksController {
 
       //тут лучше 403, но если он на рефреше, то нельзя, посмотреть в авторизации потом 403 или 401
       if (userId !== deletingSock.user_id) {
-        return res.status(409).json({
+        return res.status(403).json({
           message: 'Forbidden for this user',
           data: null,
         });

@@ -1,5 +1,5 @@
-const HttpError = require("../exceptions/HttpError");
-const { validateAccessToken } = require('../services/userService/tokenService');
+const HttpError = require("../utils/httpError");
+const { validateAccessToken } = require('../services/tokenService');
 
 module.exports = function (req, res, next) {
   try {

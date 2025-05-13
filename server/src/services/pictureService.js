@@ -1,4 +1,4 @@
-const { Picture } = require('../../../db/models');
+const { Picture } = require('../../db/models');
 
 class PictureService {
   static async findAllPictures() {

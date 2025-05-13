@@ -16,3 +16,5 @@ function verifyRefreshToken(req, res, next) {
 }
 
 module.exports = verifyRefreshToken;
+
+//не используем
