@@ -1,4 +1,4 @@
-const { Sock, User } = require('../../../db/models');
+const { Sock, User, Color, Pattern, Picture } = require('../../../db/models');
 
 class SocksService {
   static async findAllSocksByUserId(userId) {
@@ -8,6 +8,18 @@ class SocksService {
         {
           model: User,
           attributes: ['id', 'email'], //email особо и не нужен
+        },
+        {
+          model: Color,
+          attributes: ['code', 'color'],
+        },
+        {
+          model: Pattern,
+          attributes: ['pattern', 'pattern_url'],
+        },
+        {
+          model: Picture,
+          attributes: ['picture_url', 'picture'],
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -21,14 +33,30 @@ class SocksService {
   }
 
   static async findSocksById(id) {
-    return await Sock.findByPk(id);
+    return await Sock.findByPk(id, {
+      include: [
+        {
+          model: Color,
+          attributes: ['code', 'color'],
+        },
+        {
+          model: Pattern,
+          attributes: ['pattern', 'pattern_url'],
+        },
+        {
+          model: Picture,
+          attributes: ['picture_url', 'picture'],
+        },
+      ],
+      attributes: ['user_id', 'color_id', 'picture_id', 'pattern_id'],
+    });
   }
 
   static async createNewSocks(dataSocks) {
     return await Sock.create(dataSocks);
   }
 
-  static async deleteSoksById(id) {
+  static async deleteSocksById(id) {
     return await Sock.destroy({ where: { id } });
   }
 

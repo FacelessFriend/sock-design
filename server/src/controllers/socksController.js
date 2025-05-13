@@ -118,7 +118,7 @@ class SocksController {
         });
       }
 
-      const countDeleted = await SocksService.deleteSoksById(id);
+      const countDeleted = await SocksService.deleteSocksById(id);
 
       if (countDeleted < 1) {
         return res.status(400).json({
