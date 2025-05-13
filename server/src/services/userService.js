@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const { User } = require("../../db/models");
+const bcrypt = require('bcrypt');
+const { User } = require('../../db/models');
 const {
   generateTokens,
   saveToken,
@@ -7,9 +7,9 @@ const {
   findToken,
   validateAccessToken,
   validateRefreshToken,
-} = require("./tokenService");
-const HttpError = require("../exceptions/HttpError");
-const { validateEmail, validatePassword } = require("../utils/validators");
+} = require('./tokenService');
+const HttpError = require('../utils/httpError');
+const { validateEmail, validatePassword } = require('../utils/validators');
 
 const registrationService = async (name, email, password) => {
   try {
@@ -22,7 +22,7 @@ const registrationService = async (name, email, password) => {
   const candidateByEmail = await User.findOne({ where: { email } });
 
   if (candidateByEmail) {
-    throw new HttpError(400, "Пользователь с такой почтой уже существует");
+    throw new HttpError(400, 'Пользователь с такой почтой уже существует');
   }
 
   const hashPassword = await bcrypt.hash(password, 3);
@@ -52,13 +52,13 @@ const loginService = async (email, password) => {
   const user = await User.findOne({ where: { email } });
 
   if (!user) {
-    throw new HttpError(404, "Пользователя не существует");
+    throw new HttpError(404, 'Пользователя не существует');
   }
 
   const isPassEqual = await bcrypt.compare(password, user.password);
 
   if (!isPassEqual) {
-    throw new HttpError(400, "Неверный пароль");
+    throw new HttpError(400, 'Неверный пароль');
   }
 
   const payload = {
@@ -83,7 +83,7 @@ const logoutService = async (refresh) => {
 
 const refreshService = async (refresh) => {
   if (!refresh) {
-    throw new HttpError(403, "Пользователь не авторизован");
+    throw new HttpError(403, 'Пользователь не авторизован');
   }
 
   const isValid = validateRefreshToken(refresh);
@@ -91,7 +91,7 @@ const refreshService = async (refresh) => {
   const tokenFromDB = await findToken(refresh);
 
   if (!isValid || !tokenFromDB) {
-    throw new HttpError(403, "Пользователь не авторизован");
+    throw new HttpError(403, 'Пользователь не авторизован');
   }
 
   const user = await User.findByPk(tokenFromDB.user_id);

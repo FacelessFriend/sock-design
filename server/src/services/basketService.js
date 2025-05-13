@@ -1,4 +1,4 @@
-const { Basket, User } = require('../../../db/models');
+const { Basket, User } = require('../../db/models');
 
 class BasketService {
   static async findAllBasketsByUserId(userId) {

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
-function verifyAccessToken(req, res, next) {
+function authMiddleware(req, res, next) {
   try {
     const accessToken = req.headers.autorization.split(' ')[1];
     const { user } = jwt.verify(accessToken, process.env.SECRET_ACCESS_TOKEN);
@@ -15,4 +15,6 @@ function verifyAccessToken(req, res, next) {
   }
 }
 
-module.exports = verifyAccessToken;
+module.exports = authMiddleware;
+
+//не ипользуем

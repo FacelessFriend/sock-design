@@ -1,4 +1,4 @@
-const HttpError = require("../exceptions/HttpError");
+const HttpError = require("../utils/httpError");
 
 module.exports = function (err, req, res, next) {
   console.log("MID ERROR", err);

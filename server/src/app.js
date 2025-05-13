@@ -1,7 +1,7 @@
 const express = require('express');
 const serverConfig = require('./config/serverConfig');
-const indexRouter = require('./routes/indexRouter');
 const errorMiddleware = require('./middlewares/errorMiddleware');
+const indexRouter = require('./routes/indexRouter');
 
 const app = express();
 

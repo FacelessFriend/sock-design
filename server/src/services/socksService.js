@@ -1,4 +1,4 @@
-const { Sock, User } = require('../../../db/models');
+const { Sock, User } = require('../../db/models');
 
 class SocksService {
   static async findAllSocksByUserId(userId) {

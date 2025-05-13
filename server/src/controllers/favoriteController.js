@@ -1,4 +1,4 @@
-const {searchUserFavorite,postUserFavorite,deleteUserFavorite} = require("../services/...Service");
+const {searchUserFavorite,postUserFavorite,deleteUserFavorite} = require('../services/favoriteService');
 
     const  getFavoritSock  = async (req,res,next) => {
       try{

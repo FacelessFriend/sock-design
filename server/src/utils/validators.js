@@ -1,4 +1,4 @@
-const HttpError = require("../exceptions/HttpError");
+const HttpError = require("../utils/httpError");
 
 const validateEmail = (email) => {
   if (!email) throw new HttpError(400, "Email обязателен для заполнения");

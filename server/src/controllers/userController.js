@@ -5,6 +5,7 @@ const {
   refreshService,
 } = require("../services/userService");
 const cookieConfig = require("../config/cookieConfig");
+const HttpError = require('../utils/httpError');
 
 const registration = async (req, res, next) => {
   try {

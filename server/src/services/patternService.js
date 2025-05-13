@@ -1,4 +1,4 @@
-const { Pattern } = require('../../../db/models');
+const { Pattern } = require('../../db/models');
 
 class PatternService {
   static async findAllPatterns() {
