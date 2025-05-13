@@ -14,6 +14,12 @@ class SocksService {
     });
   }
 
+  static async findAllSocks() {
+    return await Sock.findAll({
+      order: [['createdAt', 'DESC']],
+    });
+  }
+
   static async findSocksById(id) {
     return await Sock.findByPk(id);
   }

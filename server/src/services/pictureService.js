@@ -1,6 +1,6 @@
 const { Picture } = require('../../../db/models');
 
-class PatternService {
+class PictureService {
   static async findAllPictures() {
     return await Picture.findAll();
   }
@@ -10,4 +10,4 @@ class PatternService {
   }
 }
 
-module.exports = PatternService;
+module.exports = PictureService;
