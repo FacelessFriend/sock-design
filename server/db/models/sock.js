@@ -15,9 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, {
         foreignKey: 'user_id',
       });
-      this.hasOne(models.User, {
-        foreignKey: 'socks_id',
-      });
     }
   }
   Sock.init(
