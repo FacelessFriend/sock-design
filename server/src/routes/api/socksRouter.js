@@ -6,7 +6,8 @@ const socksRouter = require('express').Router();
 
 socksRouter.get('/', SocksController.getAllSocks);
 socksRouter.get('/:id', validateId, SocksController.getSockById);
-socksRouter.get('/user/:id', validateId, SocksController.getAllUsersSocks);
+//ок ли эндпоинт
+socksRouter.get('/user/:id', validateId, verifyAccessToken, SocksController.getAllUsersSocks);
 socksRouter.post('/', verifyAccessToken, SocksController.createSock);
 socksRouter.put('/:id', validateId, verifyAccessToken, SocksController.updateSock);
 socksRouter.delete('/:id', validateId, verifyAccessToken, SocksController.deleteSock);

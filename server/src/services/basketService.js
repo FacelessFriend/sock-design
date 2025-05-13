@@ -14,6 +14,12 @@ class BasketService {
     });
   }
 
+  static async findAllBaskets() {
+    return await Basket.findAll({
+      order: [['createdAt', 'DESC']],
+    });
+  }
+
   static async findBasketById(id) {
     return await Basket.findByPk(id);
   }

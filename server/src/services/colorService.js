@@ -1,4 +1,4 @@
-const { Color } = require('../../../db/models');
+const { Color } = require('../../db/models');
 
 class ColorService {
   static async findAllColors() {

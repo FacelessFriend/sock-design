@@ -20,7 +20,16 @@ class SocksController {
 
   static async getAllUsersSocks(req, res) {
     try {
-      const socks = await SocksService.findAllSocksByUserId();
+      const id = req.validatedId;
+      const userId = res.locals.user.id;
+
+      if (id !== userId) {
+        return res.status(409).json({
+          message: 'Forbidden for this user',
+          data: null,
+        });
+      }
+      const socks = await SocksService.findAllSocksByUserId(userId);
 
       return res.status(200).json({
         message: 'Success',
@@ -43,7 +52,7 @@ class SocksController {
 
       if (!sock) {
         return res.status(400).json({
-          message: 'Article not found',
+          message: 'Sock not found',
           data: null,
         });
       }
@@ -113,7 +122,7 @@ class SocksController {
 
       if (countDeleted < 1) {
         return res.status(400).json({
-          message: 'Articles not found for deleting',
+          message: 'Sock not found for deleting',
           data: null,
         });
       }

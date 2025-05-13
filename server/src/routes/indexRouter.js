@@ -1,3 +1,4 @@
+const basketRouter = require('./api/basketRouter');
 const colorRouter = require('./api/colorRouter');
 const patternRouter = require('./api/patternRouter');
 const pictureRouter = require('./api/pictureRouter');
@@ -9,5 +10,6 @@ indexRouter.use('/pictures', pictureRouter);
 indexRouter.use('/colors', colorRouter);
 indexRouter.use('/patterns', patternRouter);
 indexRouter.use('/socks', socksRouter);
+indexRouter.use('/baskets', basketRouter);
 
 module.exports = indexRouter;
