@@ -1,18 +1,31 @@
 const {Favorite} = require("../../db/models");
 
-const searchUserFavorite = async (id) => {
+const searchUserFavorite = async (userId) => {
     const data = await Favorite.findAll({
-        where: { id: +id},
+        where: { user_id: +userId },
         include: [
             {
                 model: Sock,
                 as: 'sock',
+                include: [
+                    {
+                        model: Color,
+                        as: 'Color'
+                    },
+                    {
+                        model: Picture,
+                        as: 'Picture'
+                    },
+                    {
+                        model: Pattern,
+                        as: 'Pattern'
+                    }
+                ]
             }
         ]
-    })
-
-    return data
-}
+    });
+    return data;
+};
 const postUserFavorite = async (userId, sockId) => {
     const favorite = await Favorite.create({
         user_id: userId,

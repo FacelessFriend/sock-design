@@ -21,6 +21,18 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user_favorite',
         onDelete: 'CASCADE'
       })
+
+      User.hasMany(models.Basket, {
+        foreignKey: 'user_id',
+        as: 'user_basket',
+        onDelete: 'CASCADE'
+      })
+
+      User.hasMany(models.Sock, {
+        foreignKey: 'user_id',
+        as: 'user_sock',
+        onDelete: 'CASCADE'
+      })
     }
   }
   User.init({

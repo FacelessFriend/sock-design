@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Favorite.init({
     id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     user_id: DataTypes.INTEGER,
     socks_id: DataTypes.INTEGER
