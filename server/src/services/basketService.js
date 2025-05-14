@@ -32,7 +32,7 @@ class BasketService {
               attributes: ['picture_url', 'picture'],
             },
           ],
-          attributes: ['user_id', 'color_id', 'picture_id', 'pattern_id'],
+          attributes: ['id', 'user_id', 'color_id', 'picture_id', 'pattern_id'],
         },
       ],
       attributes: ['user_id', 'socks_id', 'quantity'],

@@ -5,6 +5,15 @@ import type {
   ApiResponse,
   Sock,
   SockApiResponse,
+  Color,
+  Pattern,
+  Picture,
+  ColorApiResponse,
+  AllColorsApiResponse,
+  PatternApiResponse,
+  AllPatternsApiResponse,
+  PictureApiResponse,
+  AllPicturesApiResponse,
 } from './types';
 
 export async function getUsersSocks(userId: number): Promise<Sock[]> {
@@ -71,13 +80,97 @@ export async function updateSock(
 ): Promise<Sock | null> {
   try {
     const response = await $api.put<SockApiResponse>(`/socks/${id}`, sockData);
-    
+
     if (response.status === 200) {
       return response.data.data;
     }
     return null;
   } catch (error) {
     console.error('Creating sock error', error);
+    return null;
+  }
+}
+
+export async function getAllColors(): Promise<Color[]> {
+  try {
+    const response = await $api.get<AllColorsApiResponse>(`/colors`);
+
+    if (response.status === 200 && Array.isArray(response.data.data)) {
+      return response.data.data;
+    }
+    return [];
+  } catch (error) {
+    console.error('Getting colors error', error);
+    return [];
+  }
+}
+
+export async function getColorById(id: number): Promise<Color | null> {
+  try {
+    const response = await $api.get<ColorApiResponse>(`/colors/${id}`);
+
+    if (response.status === 200) {
+      return response.data.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Getting colors by id error', error);
+    return null;
+  }
+}
+
+export async function getAllPatterns(): Promise<Pattern[]> {
+  try {
+    const response = await $api.get<AllPatternsApiResponse>(`/patterns`);
+
+    if (response.status === 200 && Array.isArray(response.data.data)) {
+      return response.data.data;
+    }
+    return [];
+  } catch (error) {
+    console.error('Getting patterns error', error);
+    return [];
+  }
+}
+
+export async function getPatternById(id: number): Promise<Pattern | null> {
+  try {
+    const response = await $api.get<PatternApiResponse>(`/patterns/${id}`);
+
+    if (response.status === 200) {
+      return response.data.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Getting pattern by id error', error);
+    return null;
+  }
+}
+
+export async function getAllPictures(): Promise<Picture[]> {
+  try {
+    const response = await $api.get<AllPicturesApiResponse>(`/pictures`);
+
+    if (response.status === 200 && Array.isArray(response.data.data)) {
+      return response.data.data;
+    }
+    return [];
+  } catch (error) {
+    console.error('Getting pictures error', error);
+    return [];
+  }
+}
+
+export async function getPictureById(id: number): Promise<Picture | null> {
+  try {
+    const response = await $api.get<PictureApiResponse>(`/pictures/${id}`);
+
+    if (response.status === 200) {
+      return response.data.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Getting picture by id error', error);
     return null;
   }
 }
