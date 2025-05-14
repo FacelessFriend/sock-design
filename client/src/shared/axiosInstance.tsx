@@ -6,14 +6,20 @@ const $api: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-let accessToken = '';
+let accessToken = localStorage.getItem('accessToken') || '';
 
 export function setAccessToken(token: string) {
   accessToken = token;
+  localStorage.setItem('accessToken', token); 
+}
+
+export function clearAccessToken() {
+  accessToken = '';
+  localStorage.removeItem('accessToken');
 }
 
 $api.interceptors.request.use((config) => {
-  if (!config.headers.Authorization) {
+  if (!config.headers.Authorization && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
@@ -25,14 +31,21 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const prevReq = error.config;
-    const status = error.response.status;
-    if (status === 403 && !prevReq.send) {
-      const response = await $api('/tokens/refresh');
-      if (response.status === 200) {
-        setAccessToken(response.data.accessToken);
-        prevReq.send = true;
-        prevReq.headers.Authorization = `Bearer ${accessToken}`;
-        return $api(prevReq);
+    
+    
+    if (error.response?.status === 403 && !prevReq._retry) {
+      prevReq._retry = true; 
+      
+      try {
+        const response = await $api.post('/refresh');
+        if (response.status === 200) {
+          setAccessToken(response.data.accessToken);
+          prevReq.headers.Authorization = `Bearer ${response.data.accessToken}`;
+          return $api(prevReq);
+        }
+      } catch (refreshError) {
+        clearAccessToken();
+        return Promise.reject(refreshError);
       }
     }
 
