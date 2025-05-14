@@ -78,9 +78,9 @@ class SocksController {
       const { colorId, pictureId, patternId } = req.body;
       const newSock = await SocksService.createNewSocks({
         user_id: userId,
-        color_id: colorId,
-        picture_id: pictureId,
-        pattern_id: patternId,
+        color_id: +colorId,
+        picture_id: +pictureId,
+        pattern_id: +patternId,
       });
 
       if (!newSock) {
@@ -155,10 +155,10 @@ class SocksController {
       const { colorId, pictureId, patternId } = req.body;
 
       const changedSock = await SocksService.updateSocksById(id, {
-        user_id: userId,
-        color_id: colorId,
-        picture_id: pictureId,
-        pattern_id: patternId,
+        user_id: 1,
+        color_id: +colorId,
+        picture_id: +pictureId,
+        pattern_id: +patternId,
       });
 
       if (!changedSock) {

@@ -75,11 +75,12 @@ class BasketController {
   static async createBasket(req, res) {
     try {
       const userId = res.locals.user.id;
-      const { sockId, quantity = 1 } = req.body;
+      const { sockId, quantity } = req.body;
+
       const newBasket = await BasketService.createNewBasket({
         user_id: userId,
-        socks_id: sockId,
-        quantity,
+        socks_id: +sockId,
+        quantity: isNaN(+quantity) ? 1 : +quantity,
       });
 
       if (!newBasket) {
@@ -154,8 +155,8 @@ class BasketController {
 
       const changedBasket = await BasketService.updateBasketById(id, {
         user_id: userId,
-        socks_id: sockId,
-        quantity,
+        socks_id: +sockId,
+        quantity: isNaN(+quantity) ? 1 : +quantity,
       });
 
       if (!changedBasket) {

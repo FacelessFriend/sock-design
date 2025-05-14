@@ -5,7 +5,7 @@ const {
   Color,
   Pattern,
   Picture,
-} = require('../../../db/models');
+} = require('../../db/models');
 
 class BasketService {
   static async findAllBasketsByUserId(userId) {
