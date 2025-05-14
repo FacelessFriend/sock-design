@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
-const $api = axios.create({
+const $api: AxiosInstance = axios.create({
   baseURL: 'http://localhost:3000/api',
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
@@ -8,7 +8,7 @@ const $api = axios.create({
 
 let accessToken = '';
 
-export function setAccessToken(token) {
+export function setAccessToken(token: string) {
   accessToken = token;
 }
 
