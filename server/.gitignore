@@ -135,8 +135,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
-.env
+# Custom ignored files
 .env.example
 config.js
-serverConfig.js
+src/config/serverConfig.js

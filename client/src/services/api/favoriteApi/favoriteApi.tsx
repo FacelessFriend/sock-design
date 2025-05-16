@@ -10,6 +10,7 @@ import type {
 export const getFavorites = async (userId: number): Promise<UserFavoritesResponse> => {
   try {
     const response = await $api.get<UserFavoritesResponse>(`/favorites/${userId}`);
+    // const response = await $api.get<UserFavoritesResponse>(`/favorites/1`)
     return response.data;
   } catch (error) {
     console.error('Error fetching favorites:', error);
@@ -21,7 +22,7 @@ export const addFavorite = async (
   params: AddFavoriteParams
 ): Promise<FavoriteItem> => {
   try {
-    const response = await $api.post<FavoriteItem>('/favorites', params);
+    const response = await $api.post<FavoriteItem>(`/favorites/${userId}`, params);
     return response.data;
   } catch (error) {
     console.error('Error adding favorite:', error);

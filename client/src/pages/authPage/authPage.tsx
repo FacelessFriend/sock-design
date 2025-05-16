@@ -1,53 +1,79 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import  { authApi } from '../../services/api/userApi/userApi';
-import type { AuthFormData } from '../../services/api/userApi/types'; 
+import authApi from '../../services/api/userApi/userApi';
 
-const initialFormData: AuthFormData = {
-  name: "",
-  email: "",
-  password: "",
-};
+interface LoginSuccessData {
+  accessToken: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
+}
 
-function AuthPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
+interface AuthPageProps {
+  onLoginSuccess: (data: LoginSuccessData) => void;
+}
+
+function AuthPage({ onLoginSuccess }: AuthPageProps) {
   const [isRegistration, setIsRegistration] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError("");
+    setError('');
 
     try {
-      const data = isRegistration
-        ? await authApi.register(formData)
-        : await authApi.login({
-            email: formData.email,
-            password: formData.password,
-          });
+      let response;
+      
+      if (isRegistration) {
+        response = await authApi.register({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        });
+      } else {
+        response = await authApi.login({
+          email: formData.email,
+          password: formData.password
+        });
+      }
 
-      localStorage.setItem('accessToken', data.accessToken);
-      onLoginSuccess();
+      localStorage.setItem('accessToken', response.accessToken);
+      onLoginSuccess(response);
       navigate('/favorites');
     } catch (err: any) {
-      setError(err.response?.data?.message || "Ошибка авторизации");
+      console.error('Auth error:', err);
+      setError(err.response?.data?.message || 'Ошибка авторизации');
     }
-  };
+  }
+
+  function toggleAuthMode() {
+    setIsRegistration(prev => !prev);
+    setError('');
+  }
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>{isRegistration ? "Регистрация" : "Вход"}</h2>
+        <h2>{isRegistration ? 'Регистрация' : 'Вход'}</h2>
+        
+        {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           {isRegistration && (
-            <div>
+            <div className="form-group">
               <label>Имя</label>
               <input
                 type="text"
@@ -59,7 +85,7 @@ function AuthPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
             </div>
           )}
 
-          <div>
+          <div className="form-group">
             <label>Email</label>
             <input
               type="email"
@@ -70,7 +96,7 @@ function AuthPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
             />
           </div>
 
-          <div>
+          <div className="form-group">
             <label>Пароль</label>
             <input
               type="password"
@@ -81,18 +107,17 @@ function AuthPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
             />
           </div>
 
-          {error && <div className="error">{error}</div>}
-
-          <button type="submit">
-            {isRegistration ? "Зарегистрироваться" : "Войти"}
+          <button type="submit" className="submit-btn">
+            {isRegistration ? 'Зарегистрироваться' : 'Войти'}
           </button>
         </form>
 
         <button 
-          type="button"
-          onClick={() => setIsRegistration(!isRegistration)}
+          type="button" 
+          className="switch-mode-btn"
+          onClick={toggleAuthMode}
         >
-          {isRegistration ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Зарегистрироваться"}
+          {isRegistration ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}
         </button>
       </div>
     </div>

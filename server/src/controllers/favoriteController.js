@@ -12,17 +12,21 @@ const {searchUserFavorite,postUserFavorite,deleteUserFavorite} = require('../ser
       }
     }
 
-    const  postFavoritSock  = async (req,res,next) => {
-        try{
+    const postFavoritSock = async (req, res, next) => {
+      try {
           const { id } = req.params;
-          const { sock_id } = req.body; 
+          const { sock_id } = req.body;
   
-          const favorite = await postUserFavorite(id,sock_id)
-          res.status(200).json(favorite)
-        }catch(error){
-          next(error)
-        }
+          if (!sock_id) {
+              return res.status(400).json({ message: "sock_id is required" });
+          }
+  
+          const favorite = await postUserFavorite(id, sock_id);
+          res.status(201).json(favorite);
+      } catch(error) {
+          next(error);
       }
+  }
 
       const  deleteFavoritSock  = async (req,res,next) => {
         try{

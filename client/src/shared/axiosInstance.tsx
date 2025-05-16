@@ -1,50 +1,53 @@
-import axios, { type AxiosInstance } from 'axios';
+import axios from "axios";
 
-const $api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api',
-  headers: { 'Content-Type': 'application/json' },
+const $api = axios.create({
+  baseURL: "http://localhost:3000/api",
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-let accessToken = localStorage.getItem('accessToken') || '';
+let accessToken = localStorage.getItem("accessToken") || "";
 
 export function setAccessToken(token: string) {
   accessToken = token;
-  localStorage.setItem('accessToken', token); 
+  localStorage.setItem("accessToken", token);
 }
 
 export function clearAccessToken() {
-  accessToken = '';
-  localStorage.removeItem('accessToken');
+  accessToken = "";
+  localStorage.removeItem("accessToken");
 }
 
 $api.interceptors.request.use((config) => {
-  if (!config.headers.Authorization && accessToken) {
+  if (accessToken && !config.headers.Authorization) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
 
 $api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
-    const prevReq = error.config;
-    
-    
-    if (error.response?.status === 403 && !prevReq._retry) {
-      prevReq._retry = true; 
-      
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
       try {
-        const response = await $api.post('/refresh');
-        if (response.status === 200) {
+        const response = await axios.get("http://localhost:3000/api/refresh", {
+          withCredentials: true,
+        });
+
+        if (response.data.accessToken) {
           setAccessToken(response.data.accessToken);
-          prevReq.headers.Authorization = `Bearer ${response.data.accessToken}`;
-          return $api(prevReq);
+          originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
+          return $api(originalRequest);
         }
       } catch (refreshError) {
         clearAccessToken();
+        window.location.href = "/auth";
         return Promise.reject(refreshError);
       }
     }

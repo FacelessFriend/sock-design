@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart} from 'react-icons/fa'; 
 import { favoriteApi } from '../../services/api/favoriteApi/favoriteApi';
 import type { FavoriteItem } from '../../services/api/favoriteApi/types';
 
@@ -67,7 +67,11 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ user, onLogout }) => {
     <div>
       <div>
         <h1>Your Favorite Socks</h1>
-        <button onClick={onLogout}>Logout</button>
+        <button 
+          onClick={onLogout}
+          >
+          Logout
+        </button>
       </div>
       <div>
         {favorites.map((favorite) => (
@@ -80,17 +84,10 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ user, onLogout }) => {
               <div>
                 <h3>{favorite.sock.Color.color} Socks</h3>
                 <p>Pattern: {favorite.sock.Pattern.pattern}</p>
-                <div style={{ 
-                  width: '30px', 
-                  height: '30px', 
-                  backgroundColor: favorite.sock.Color.code,
-                  borderRadius: '50%',
-                  border: '1px solid #ddd'
-                }} />
+                <div />
               </div>
               <button
                 onClick={() => handleRemoveFavorite(favorite.id)}
-                aria-label="Remove from favorites"
               >
                 <FaHeart />
               </button>
