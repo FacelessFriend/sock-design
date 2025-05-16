@@ -34,7 +34,7 @@ function AuthPage({ onLoginSuccess }: { onLoginSuccess: () => void }) {
 
       localStorage.setItem('accessToken', data.accessToken);
       onLoginSuccess();
-      navigate('/');
+      navigate('/favorites');
     } catch (err: any) {
       setError(err.response?.data?.message || "Ошибка авторизации");
     }
