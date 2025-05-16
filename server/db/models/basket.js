@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: DataTypes.INTEGER,
       socks_id: DataTypes.INTEGER,
-      quantity: DataTypes.INTEGER,
+      quantity: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

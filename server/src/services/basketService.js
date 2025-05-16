@@ -1,4 +1,11 @@
-const { Basket, User } = require('../../db/models');
+const {
+  Basket,
+  User,
+  Sock,
+  Color,
+  Pattern,
+  Picture,
+} = require('../../db/models');
 
 class BasketService {
   static async findAllBasketsByUserId(userId) {
@@ -9,11 +16,31 @@ class BasketService {
           model: User,
           attributes: ['id', 'email'], //email особо и не нужен
         },
+        {
+          model: Sock,
+          include: [
+            {
+              model: Color,
+              attributes: ['code', 'color'],
+            },
+            {
+              model: Pattern,
+              attributes: ['pattern', 'pattern_url'],
+            },
+            {
+              model: Picture,
+              attributes: ['picture_url', 'picture'],
+            },
+          ],
+          attributes: ['id', 'user_id', 'color_id', 'picture_id', 'pattern_id'],
+        },
       ],
+      attributes: ['user_id', 'socks_id', 'quantity'],
       order: [['createdAt', 'DESC']],
     });
   }
 
+  //пока не актуален
   static async findAllBaskets() {
     return await Basket.findAll({
       order: [['createdAt', 'DESC']],
@@ -21,7 +48,28 @@ class BasketService {
   }
 
   static async findBasketById(id) {
-    return await Basket.findByPk(id);
+    return await Basket.findByPk(id, {
+      include: [
+        {
+          model: Sock,
+          include: [
+            {
+              model: Color,
+              attributes: ['code', 'color'],
+            },
+            {
+              model: Pattern,
+              attributes: ['pattern', 'pattern_url'],
+            },
+            {
+              model: Picture,
+              attributes: ['picture_url', 'picture'],
+            },
+          ],
+          attributes: ['user_id', 'color_id', 'picture_id', 'pattern_id'],
+        },
+      ],
+    });
   }
 
   static async createNewBasket(dataBasket) {
