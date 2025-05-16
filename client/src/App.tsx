@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import './App.css';
 import AuthPage from './pages/authPage/authPage';
 import { authApi } from './services/api/userApi/userApi';
+import BasketPage from './pages/basketPage/basketPage';
+import ThankPage from './pages/thankPage/thankPage';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -35,14 +42,13 @@ function App() {
 
   return (
     <Routes>
-      <Route 
-        path="/auth" 
-        element={<AuthPage onLoginSuccess={() => setIsAuth(true)} />} 
+      <Route
+        path="/auth"
+        element={<AuthPage onLoginSuccess={() => setIsAuth(true)} />}
       />
-      <Route 
-        path="*" 
-        element={<Navigate to="/auth" replace />} 
-      />
+      <Route path="user/:id/basket" element={<BasketPage />} />
+      <Route path="/thanks" element={<ThankPage />} />
+      <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>
   );
 }

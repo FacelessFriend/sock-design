@@ -1,0 +1,112 @@
+.baskets_wrap {
+  border: 2px solid blue;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%; // поменять под боди потом
+  margin: 0 auto;
+  height: 100%;
+  min-width: 450px;
+}
+
+.del_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 150px;
+}
+
+.basket_wrap {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.sock_wrap {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 200px;
+  max-width: 300px;
+  aspect-ratio: 1/1;
+}
+
+.info_wrap {
+  border: 2px solid black;
+  display: flex;
+  gap: 40px;
+  flex: 1;
+  min-width: 400px;
+}
+
+.info_text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  margin: 10px;
+  min-width: 300px;
+}
+
+.info_link {
+  font-size: 12px;
+}
+
+.info_input {
+  display: block;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solig grey;
+  margin: 5px;
+}
+.info_input_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info_input_label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+h4 {
+  margin: 5px;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page_wrap {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 80%;
+
+  h2 {
+    align-self: flex-start;
+    margin-top: 20px;
+  }
+}
+
+.quantity {
+  align-self: flex-start;
+  font-size: 18px;
+  opacity: 70%;
+}
+
+.form_button {
+  width: 35%;
+  height: 50px;
+  align-self: center;
+  margin-bottom: 20px;
+}
+
+button {
+  border-radius: 5px;
+}

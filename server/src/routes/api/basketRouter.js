@@ -8,7 +8,9 @@ basketRouter.get('/', BasketController.getAllBaskets);
 basketRouter.get('/:id', validateId, BasketController.getBasketById);
 //ок ли эндпоинт
 basketRouter.get(
-  '/user/:id',
+  //правка
+  // '/user/:id',
+  '/user',
   validateId,
   authMiddleware,
   BasketController.getAllUsersBaskets
