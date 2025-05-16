@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: 1,
       },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: 'active',
+      },
     },
     {
       sequelize,

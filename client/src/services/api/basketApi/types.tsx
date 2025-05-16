@@ -5,6 +5,7 @@ export interface Basket {
   user_id: number;
   socks_id: number;
   quantity: number;
+  status: string;
   createdAt?: string;
   updatedAt?: string;
   Sock: Sock;
@@ -17,4 +18,5 @@ export type AllBasketsApiResponse = ApiResponse<Basket[]>;
 export interface AddBasket {
   sockId: number;
   quantity?: number;
+  status?: string;
 }

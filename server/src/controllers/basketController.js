@@ -18,25 +18,30 @@ class BasketController {
     }
   }
 
+  //на время отладки без авторизации - потом раскомментировать и вернуть мидлварку
   static async getAllUsersBaskets(req, res) {
     try {
-      const id = req.validatedId;
+      // правка
+      // const id = req.validatedId;
+      // console.log('id server', id);
+
       const userId = res.locals.user.id;
 
-      if (id !== userId) {
+      if (!userId) {
         return res.status(403).json({
           message: 'Forbidden for this user',
           data: null,
         });
       }
+      // const baskets = await BasketService.findAllBasketsByUserId(id); //убрать потом
       const baskets = await BasketService.findAllBasketsByUserId(userId);
 
       return res.status(200).json({
         message: 'Success',
         data: baskets,
       });
-    } catch ({ message }) {
-      console.error("Getting user's baskets controller error", message);
+    } catch (e) {
+      console.error("Getting user's baskets controller error", e);
       res.status(500).json({
         message: "Internal server error on getting user's baskets",
         data: null,
@@ -151,12 +156,13 @@ class BasketController {
           data: null,
         });
       }
-      const { sockId, quantity } = req.body;
+      const { sockId, quantity, status } = req.body;
 
       const changedBasket = await BasketService.updateBasketById(id, {
         user_id: userId,
         socks_id: +sockId,
         quantity: isNaN(+quantity) ? 1 : +quantity,
+        status,
       });
 
       if (!changedBasket) {

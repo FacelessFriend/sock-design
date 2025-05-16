@@ -137,5 +137,5 @@ dist
 
 # Custom ignored files
 .env.example
-config.js
-src/config/serverConfig.js
+db/config/database.js
+db/models/index.js

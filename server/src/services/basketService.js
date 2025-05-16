@@ -10,7 +10,10 @@ const {
 class BasketService {
   static async findAllBasketsByUserId(userId) {
     return await Basket.findAll({
-      where: { user_id: userId },
+      where: {
+        user_id: userId,
+        status: 'active',
+      },
       include: [
         {
           model: User,
@@ -35,7 +38,7 @@ class BasketService {
           attributes: ['id', 'user_id', 'color_id', 'picture_id', 'pattern_id'],
         },
       ],
-      attributes: ['user_id', 'socks_id', 'quantity'],
+      attributes: ['id', 'user_id', 'socks_id', 'quantity', 'status'],
       order: [['createdAt', 'DESC']],
     });
   }

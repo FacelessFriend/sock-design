@@ -7,10 +7,14 @@ import type {
 } from './types';
 import type { ApiResponse } from '../socksApi/types';
 
-export async function getUsersBaskets(userId: number): Promise<Basket[]> {
+//потом убрать параметр, так как из рес локалс берется
+export async function getUsersBaskets(): Promise<Basket[]> {
   try {
+    // console.log('userId', userId);
     const response = await $api.get<AllBasketsApiResponse>(
-      `/baskets/user/${userId}`
+      //правка
+      // `/baskets/user/${userId}`
+      `/baskets/user`
     );
 
     if (response.status === 200 && Array.isArray(response.data.data)) {

@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import AuthPage from './pages/authPage/authPage';
 import FavoritesPage from './pages/favoritePage/favoritePage';
+import { Routes, Route, Navigate} from 'react-router-dom';
+import './App.css';
+import AuthPage from './pages/authPage/authPage';
+import BasketPage from './pages/basketPage/basketPage';
+import ThankPage from './pages/thankPage/thankPage';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -61,10 +64,12 @@ function App() {
             <Navigate to="/auth" replace />
         } 
       />
+
+      <Route path="user/:id/basket" element={<BasketPage />} />
+      <Route path="/thanks" element={<ThankPage />} />
       <Route 
         path="*" 
-        element={<Navigate to={isAuth ? "/favorites" : "/auth"} replace />} 
-      />
+        element={<Navigate to={isAuth ? "/favorites" : "/auth"} replace />} />
     </Routes>
   );
 }
