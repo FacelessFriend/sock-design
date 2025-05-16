@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FaHeart} from 'react-icons/fa'; 
+import { FaHeart } from 'react-icons/fa'; 
 import { favoriteApi } from '../../services/api/favoriteApi/favoriteApi';
 import type { FavoriteItem } from '../../services/api/favoriteApi/types';
+import './favoritePage.css';
 
 interface FavoritesPageProps {
   user: {
@@ -48,50 +49,45 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ user, onLogout }) => {
   }, [user?.id]);
 
   if (!user) {
-    return <div>Please log in to view favorites</div>;
+    return <div className="message">Please log in to view favorites</div>;
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="message">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="message">{error}</div>;
   }
 
   if (favorites.length === 0) {
-    return <div>No favorites yet</div>;
+    return <div className="message">No favorites yet</div>;
   }
 
   return (
-    <div>
-      <div>
-        <h1>Your Favorite Socks</h1>
-        <button 
-          onClick={onLogout}
-          >
-          Logout
-        </button>
+    <div className="favorites-container">
+      <div className="favorites-header">
+        <h1>Твои любимые носки</h1>
       </div>
-      <div>
+      <div className="favorites-list">
         {favorites.map((favorite) => (
-          <div key={favorite.id}>
-            <div>
-              <img 
-                src={favorite.sock.Picture.picture_url} 
-                alt={favorite.sock.Picture.picture} 
-              />
-              <div>
-                <h3>{favorite.sock.Color.color} Socks</h3>
-                <p>Pattern: {favorite.sock.Pattern.pattern}</p>
-                <div />
-              </div>
-              <button
-                onClick={() => handleRemoveFavorite(favorite.id)}
-              >
-                <FaHeart />
-              </button>
+          <div key={favorite.id} className="favorite-item">
+            <img 
+              className="favorite-image"
+              src={favorite.sock.Picture.picture_url} 
+              alt={favorite.sock.Picture.picture} 
+            />
+            <div className="favorite-details">
+              <h3>{favorite.sock.Color.color} Socks</h3>
+              <p>Pattern: {favorite.sock.Pattern.pattern}</p>
             </div>
+            <p>Ссылка на носок: http://localhost:5173/socks/{favorite.sock.id}</p>
+            <button
+              className="favorite-remove-btn"
+              onClick={() => handleRemoveFavorite(favorite.id)}
+            >
+              <FaHeart />
+            </button>
           </div>
         ))}
       </div>

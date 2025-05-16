@@ -5,6 +5,7 @@ import './App.css';
 import AuthPage from './pages/authPage/authPage';
 import BasketPage from './pages/basketPage/basketPage';
 import ThankPage from './pages/thankPage/thankPage';
+import Header from './pages/header/Header';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -51,6 +52,8 @@ function App() {
   }
 
   return (
+    <>
+    <Header isAuth={isAuth} onLogout={handleLogout} />
     <Routes> 
       <Route 
         path="/auth" 
@@ -71,6 +74,7 @@ function App() {
         path="*" 
         element={<Navigate to={isAuth ? "/favorites" : "/auth"} replace />} />
     </Routes>
+    </>
   );
 }
 
