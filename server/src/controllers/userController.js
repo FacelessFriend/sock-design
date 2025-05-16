@@ -53,6 +53,10 @@ const refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
 
+    if (!refreshToken) {
+      throw new HttpError(401, 'Refresh token not found');
+    }
+
     const userData = await refreshService(refreshToken);
 
     res.cookie("refreshToken", userData.refresh, cookieConfig);

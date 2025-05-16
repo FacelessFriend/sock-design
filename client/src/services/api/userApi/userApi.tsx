@@ -1,38 +1,36 @@
 import $api from '../../../shared/axiosInstance';
-import type { AuthResponse } from './types';
 
-export async function register(data: { name: string; email: string; password: string }): Promise<AuthResponse> {
-  try {
-    const response = await $api.post<AuthResponse>('/registration', data);
-    return response.data;
-  } catch (error) {
-    console.error('Registration error', error);
-    throw error;
-  }
+interface AuthResponse {
+  accessToken: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
 }
 
-export async function login(data: { email: string; password: string }): Promise<AuthResponse> {
-  try {
-    const response = await $api.post<AuthResponse>('/login', data);
-    return response.data;
-  } catch (error) {
-    console.error('Login error', error);
-    throw error;
-  }
-}
+export const register = async (data: { name: string; email: string; password: string }): Promise<AuthResponse> => {
+  const response = await $api.post('/registration', data);
+  return response.data;
+};
 
-export async function logout(): Promise<{ message: string }> {
-  try {
-    const response = await $api.post<{ message: string }>('/logout');
-    return response.data;
-  } catch (error) {
-    console.error('Logout error', error);
-    throw error;
-  }
-}
+export const login = async (data: { email: string; password: string }): Promise<AuthResponse> => {
+  const response = await $api.post('/login', data);
+  return response.data;
+};
 
-export const authApi = {
-    login,
-    register,
-    logout,
+export const logout = async (): Promise<void> => {
+  await $api.post('/logout');
+};
+
+export const refresh = async (): Promise<AuthResponse> => {
+  const response = await $api.get('/refresh');
+  return response.data;
+};
+
+export default {
+  register,
+  login,
+  logout,
+  refresh,
 };
