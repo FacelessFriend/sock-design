@@ -139,3 +139,4 @@ dist
 .env.example
 db/config/database.js
 db/models/index.js
+.sequelizerc
