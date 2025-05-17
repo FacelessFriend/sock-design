@@ -9,6 +9,7 @@ import {
 import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import DeleteOutline from '@mui/icons-material/DeleteOutline';
+import MiniSock from '../../components/miniSock/miniSock';
 
 interface BasketPageProrps {
   user: {
@@ -125,11 +126,9 @@ export default function BasketPage({ user }: BasketPageProrps) {
             return (
               <div key={basket.id} className={styles.basket_wrap}>
                 <div className={styles.sock_wrap}>
-                  <div>{basket.Sock.Color.color}</div>
-                  <div>{basket.Sock.Color.code}</div>
-                  <div>{basket.Sock.Picture?.picture}</div>
-                  <div>{basket.Sock.Pattern?.pattern}</div>
+                  <MiniSock sockId={basket.Sock.id} />
                 </div>
+
                 <div className={styles.info_wrap}>
                   <div className={styles.info_text}>
                     <h4>

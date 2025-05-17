@@ -1,0 +1,61 @@
+.sock_wrap {
+  position: relative;
+  width: 40%;
+  min-width: 200px;
+  aspect-ratio: 1/1;
+  // border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.sock {
+  display: block;
+  position: absolute;
+  top: 15%;
+  left: 15%;
+}
+
+.pattern {
+  display: block;
+  position: absolute;
+  width: 40%;
+  // height: 100%;
+  top: 30%;
+  left: 23%;
+  opacity: 0;
+
+  &Visible {
+    opacity: 1;
+  }
+}
+
+.picture {
+  display: block;
+  position: absolute;
+  width: 40%;
+  // height: 100%;
+  // top: 40%;
+  left: 45%;
+  top: 5%;
+  opacity: 0;
+
+  &Visible {
+    opacity: 1;
+  }
+}
+
+.picture_wrap {
+  width: 100%;
+  height: 50%;
+  position: relative;
+  // border: 2px solid rgb(207, 33, 33);
+}
+
+.pattern_wrap {
+  width: 100%;
+  height: 50%;
+  position: relative;
+  // border: 2px solid rgb(23, 109, 229);
+}

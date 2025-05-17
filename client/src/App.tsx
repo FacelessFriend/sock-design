@@ -7,6 +7,7 @@ import BasketPage from './pages/basketPage/basketPage';
 import ThankPage from './pages/thankPage/thankPage';
 import SvgComponent from './components/svgComponent/svgComponent';
 import Header from './pages/header/Header';
+import MiniSock from './components/miniSock/miniSock';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -16,6 +17,9 @@ function App() {
     email: string;
   } | null>(null);
   const [loading, setLoading] = useState(true);
+
+//УДАЛИТЬ ПОТОМ тестовый проп для отлатки мини-носка
+  const sockId = 15;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -77,7 +81,8 @@ function App() {
 
       <Route path="user/basket" element={user && <BasketPage user={user} />} />
       <Route path="/thanks" element={<ThankPage />} />
-      <Route path="/svg" element={<SvgComponent />} />
+        <Route path="/svg" element={<SvgComponent />} />
+        <Route path="/mini" element={<MiniSock sockId={sockId} />} />
       <Route
         path="*"
         element={<Navigate to={isAuth ? '/favorites' : '/auth'} replace />}
