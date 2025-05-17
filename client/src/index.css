@@ -67,7 +67,7 @@ button:focus-visible {
   }
 } */
 
-@use './styles/fonts';
+@import './styles/_fonts.scss';
 
 *,
 body,
