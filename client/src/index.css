@@ -67,6 +67,7 @@ button:focus-visible {
   }
 } */
 
+@import './styles/_fonts.scss';
 
 *,
 body,
@@ -74,4 +75,12 @@ html {
   margin: 0;
   box-sizing: border-box;
   padding: 0;
+}
+
+:root {
+  --font-main: 'Sansation', sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
 }
