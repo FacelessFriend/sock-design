@@ -68,7 +68,7 @@ export interface Picture extends PictureSock {
 }
 
 export interface AddSock {
-  colorId: number;
-  pictureId?: number;
-  patternId?: number;
+  colorId: number | null;
+  pictureId?: number | null;
+  patternId?: number | null;
 }

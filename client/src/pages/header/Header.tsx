@@ -27,7 +27,7 @@ function Header({ isAuth, onLogout }: HeaderProps) {
               <button className="header-button" onClick={() => navigate('/favorites')}>
                 Избранное
               </button>
-              <button className="header-button" onClick={() => navigate(`/user/${localStorage.getItem('userId')}/basket`)}>
+              <button className="header-button" onClick={() => navigate(`/user/basket`)}>
                 Корзина
               </button>
               <button className="header-button" onClick={handleLogout}>

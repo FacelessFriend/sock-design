@@ -75,7 +75,7 @@ function App() {
         }
       />
 
-      <Route path="user/basket" element={<BasketPage user={user} />} />
+      <Route path="user/basket" element={user && <BasketPage user={user} />} />
       <Route path="/thanks" element={<ThankPage />} />
       <Route path="/svg" element={<SvgComponent />} />
       <Route
