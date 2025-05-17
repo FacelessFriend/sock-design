@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react';
 import FavoritesPage from './pages/favoritePage/favoritePage';
-import { Routes, Route, Navigate} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import AuthPage from './pages/authPage/authPage';
 import BasketPage from './pages/basketPage/basketPage';
 import ThankPage from './pages/thankPage/thankPage';
+import SvgComponent from './components/svgComponent/svgComponent';
 import Header from './pages/header/Header';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState<{ id: number; name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{
+    id: number;
+    name: string;
+    email: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('accessToken');
       const userData = localStorage.getItem('user');
-      
+
       if (token && userData) {
         try {
           setIsAuth(true);
@@ -59,20 +64,24 @@ function App() {
         path="/auth" 
         element={isAuth ? <Navigate to="/favorites" replace /> : <AuthPage onLoginSuccess={handleLoginSuccess} />} 
       />
-      <Route 
-        path="/favorites" 
+      <Route
+        path="/favorites"
         element={
-          isAuth ? 
-            <FavoritesPage user={user} onLogout={handleLogout} /> : 
+          isAuth ? (
+            <FavoritesPage user={user} onLogout={handleLogout} />
+          ) : (
             <Navigate to="/auth" replace />
-        } 
+          )
+        }
       />
 
-      <Route path="user/:id/basket" element={<BasketPage />} />
+      <Route path="user/basket" element={<BasketPage user={user} />} />
       <Route path="/thanks" element={<ThankPage />} />
-      <Route 
-        path="*" 
-        element={<Navigate to={isAuth ? "/favorites" : "/auth"} replace />} />
+      <Route path="/svg" element={<SvgComponent />} />
+      <Route
+        path="*"
+        element={<Navigate to={isAuth ? '/favorites' : '/auth'} replace />}
+      />
     </Routes>
     </>
   );

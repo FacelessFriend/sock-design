@@ -7,24 +7,12 @@ module.exports = {
       'Patterns',
       [
         {
-          pattern: 'testPattern1',
-          pattern_url: 'urlTestPattern1',
+          pattern: 'winter',
+          pattern_url: 'pat_winter_blue.svg',
         },
         {
-          pattern: 'testPattern2',
-          pattern_url: 'urlTestPattern2',
-        },
-        {
-          pattern: 'testPattern3',
-          pattern_url: 'urlTestPattern3',
-        },
-        {
-          pattern: 'testPattern4',
-          pattern_url: 'urlTestPattern4',
-        },
-        {
-          pattern: 'testPattern5',
-          pattern_url: 'urlTestPattern5',
+          pattern: 'pink',
+          pattern_url: 'pat_pink.svg',
         },
       ],
       {}

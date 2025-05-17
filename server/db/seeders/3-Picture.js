@@ -7,24 +7,16 @@ module.exports = {
       'Pictures',
       [
         {
-          picture_url: 'testPic1',
-          picture: 'testUrlPic1',
+          picture_url: 'pic_winter_blue.svg',
+          picture: 'winter',
         },
         {
-          picture_url: 'testPic2',
-          picture: 'testUrlPic2',
+          picture_url: 'pic_paw.svg',
+          picture: 'paw',
         },
         {
-          picture_url: 'testPic3',
-          picture: 'testUrlPic3',
-        },
-        {
-          picture_url: 'testPic4',
-          picture: 'testUrlPic4',
-        },
-        {
-          picture_url: 'testPic5',
-          picture: 'testUrlPic5',
+          picture_url: 'pic_heart_orange.svg',
+          picture: 'hearts',
         },
       ],
       {}

@@ -79,8 +79,8 @@ class SocksController {
       const newSock = await SocksService.createNewSocks({
         user_id: userId,
         color_id: +colorId,
-        picture_id: +pictureId,
-        pattern_id: +patternId,
+        picture_id: pictureId !== null ? +pictureId : null,
+        pattern_id: patternId !== null ? +patternId : null,
       });
 
       if (!newSock) {
