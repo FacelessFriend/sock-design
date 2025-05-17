@@ -62,9 +62,9 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
         }));
 
         setSocks(socksWithFavorites);
-      } catch (err) {
-        setError('Не удалось загрузить коллекцию носков');
-        console.error('Ошибка загрузки:', err);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Ошибка при загрузке данных');
       } finally {
         setLoading(false);
       }
@@ -86,23 +86,27 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
         
         if (favoriteToDelete) {
           await deleteFavorite(favoriteToDelete.id);
+          setSocks(prevSocks => 
+            prevSocks.map(sock => 
+              sock.id === sockId 
+                ? { ...sock, isFavorite: false } 
+                : sock
+            )
+          );
         }
       } else {
         await addFavorite({ user_id: user.id, sock_id: sockId });
+        setSocks(prevSocks => 
+          prevSocks.map(sock => 
+            sock.id === sockId 
+              ? { ...sock, isFavorite: true } 
+              : sock
+          )
+        );
       }
-      
-      setSocks(prevSocks => 
-        prevSocks.map(sock => 
-          sock.id === sockId 
-            ? { ...sock, isFavorite: !isCurrentlyFavorite } 
-            : sock
-        )
-      );
-    } catch (err) {
-      console.error('Ошибка при обновлении избранного:', err);
-      setError(isCurrentlyFavorite 
-        ? 'Не удалось удалить из избранного' 
-        : 'Не удалось добавить в избранное');
+    } catch (error) {
+      console.error('Error handling favorite:', error);
+      setError('Ошибка при обновлении избранного');
     }
   };
 
@@ -127,9 +131,9 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
             : sock
         )
       );
-    } catch (err) {
-      console.error('Ошибка при добавлении в корзину:', err);
-      setError('Не удалось добавить в корзину');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      setError('Ошибка при добавлении в корзину');
     }
   };
 
@@ -172,8 +176,6 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
                       handleFavoriteClick(sock.id, sock.isFavorite);
                     }}
                     className={styles.actionButton}
-                    aria-label={sock.isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
-                    title={sock.isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
                   >
                     {sock.isFavorite ? (
                       <FaHeart color="red" className={styles.icon} />
@@ -189,8 +191,6 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
                     }}
                     disabled={sock.inCart}
                     className={styles.actionButton}
-                    aria-label={sock.inCart ? "Уже в корзине" : "Добавить в корзину"}
-                    title={sock.inCart ? "Уже в корзине" : "Добавить в корзину"}
                   >
                     <FaShoppingCart 
                       color={sock.inCart ? 'green' : 'gray'} 
@@ -204,8 +204,6 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
                       handleDetailsClick(sock.id);
                     }}
                     className={styles.actionButton}
-                    aria-label="Подробнее"
-                    title="Подробнее"
                   >
                     <FaInfoCircle className={styles.icon} />
                   </button>
