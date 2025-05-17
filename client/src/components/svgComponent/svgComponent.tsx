@@ -80,8 +80,8 @@ export default function SvgComponent() {
 
     const addData = {
       colorId: selectedColor?.id,
-      pictureId: selectedPicture?.id,
-      patternId: selectedPattern?.id,
+      pictureId: selectedPicture?.id || null,
+      patternId: selectedPattern?.id || null,
     };
     const response = await createSock(addData);
     setSock(response);
