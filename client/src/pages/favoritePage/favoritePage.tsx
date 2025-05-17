@@ -3,6 +3,7 @@ import { FaHeart } from 'react-icons/fa';
 import { favoriteApi } from '../../services/api/favoriteApi/favoriteApi';
 import type { FavoriteItem } from '../../services/api/favoriteApi/types';
 import './favoritePage.css';
+import MiniSock from '../../components/miniSock/miniSock';
 
 interface FavoritesPageProps {
   user: {
@@ -72,14 +73,17 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ user, onLogout }) => {
       <div className="favorites-list">
         {favorites.map((favorite) => (
           <div key={favorite.id} className="favorite-item">
-            <img 
+            {/* <img 
               className="favorite-image"
               src={favorite.sock.Picture.picture_url} 
               alt={favorite.sock.Picture.picture} 
-            />
+            /> */}
+            <div className='img_wrap'>
+            <MiniSock sockId={favorite.sock.id} /></div>
             <div className="favorite-details">
               <h3>{favorite.sock.Color.color} Socks</h3>
-              <p>Pattern: {favorite.sock.Pattern.pattern}</p>
+              <p>Pattern: {favorite.sock.Pattern?.pattern || '-'}</p>
+              <p>Pattern: {favorite.sock.Picture?.picture || '-'}</p>
             </div>
             <p>Ссылка на носок: http://localhost:5173/socks/{favorite.sock.id}</p>
             <button
