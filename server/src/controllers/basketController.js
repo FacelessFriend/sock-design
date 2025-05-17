@@ -82,6 +82,9 @@ class BasketController {
       const userId = res.locals.user.id;
       const { sockId, quantity } = req.body;
 
+      console.log(userId,sockId, quantity);
+      
+
       const newBasket = await BasketService.createNewBasket({
         user_id: userId,
         socks_id: +sockId,

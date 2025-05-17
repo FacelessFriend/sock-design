@@ -24,6 +24,12 @@ function Header({ isAuth, onLogout }: HeaderProps) {
         <div className="header-nav">
           {isAuth ? (
             <>
+                <button className="header-button" onClick={() => navigate('/socks')}>
+                Носки
+              </button>
+              <button className="header-button" onClick={() => navigate('/svg')}>
+                Сoздать носок
+              </button>
               <button className="header-button" onClick={() => navigate('/favorites')}>
                 Избранное
               </button>

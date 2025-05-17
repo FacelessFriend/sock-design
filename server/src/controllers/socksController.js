@@ -48,6 +48,7 @@ class SocksController {
   static async getSockById(req, res) {
     try {
       const id = req.validatedId;
+      console.log(id)
       const sock = await SocksService.findSocksById(id);
 
       if (!sock) {

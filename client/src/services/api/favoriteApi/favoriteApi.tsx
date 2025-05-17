@@ -22,14 +22,16 @@ export const addFavorite = async (
   params: AddFavoriteParams
 ): Promise<FavoriteItem> => {
   try {
-    const response = await $api.post<FavoriteItem>(`/favorites/${userId}`, params);
+    const response = await $api.post<FavoriteItem>(
+      `/favorites/${params.user_id}`,
+      { sock_id: params.sock_id }
+    );
     return response.data;
   } catch (error) {
     console.error('Error adding favorite:', error);
     throw error;
   }
 };
-
 export const deleteFavorite = async (
   favoriteId: number
 ): Promise<DeleteFavoriteResponse> => {
