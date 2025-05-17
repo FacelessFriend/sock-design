@@ -48,7 +48,7 @@ class SocksService {
           attributes: ['picture_url', 'picture'],
         },
       ],
-      attributes: ['user_id', 'color_id', 'picture_id', 'pattern_id'],
+      attributes: ['id', 'user_id', 'color_id', 'picture_id', 'pattern_id'],
     });
   }
 

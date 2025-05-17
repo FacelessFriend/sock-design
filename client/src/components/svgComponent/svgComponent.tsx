@@ -4,13 +4,18 @@ import type {
   Color,
   Pattern,
   Picture,
+  Sock,
 } from '../../services/api/socksApi/types';
 import {
-	createSock,
+  createSock,
+  deleteSock,
   getAllColors,
   getAllPatterns,
   getAllPictures,
+  getSockById,
+  updateSock,
 } from '../../services/api/socksApi/socksApi';
+import { createBasket } from '../../services/api/basketApi/basketApi';
 
 export default function SvgComponent() {
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
@@ -21,7 +26,7 @@ export default function SvgComponent() {
   const [pictures, setPictures] = useState<Picture[]>([]);
   const [patterns, setPatterns] = useState<Pattern[]>([]);
 
-  const [sock, setSock] = useState(null);
+  const [sock, setSock] = useState<Sock | null>(null);
 
   async function getColors(): Promise<void> {
     const response = await getAllColors();
@@ -54,32 +59,108 @@ export default function SvgComponent() {
 
   const handlePatternClick = (pattern: Pattern) => {
     setSelectedPattern(pattern);
-	};
+  };
 
-	const handlerButtonClear = () => {
-		setSelectedColor(null);
-		setSelectedPicture(null);
-		setSelectedPattern(null);
-	}
-	
+  const handlerButtonClear = () => {
+    setSelectedColor(null);
+    setSelectedPicture(null);
+    setSelectedPattern(null);
+  };
 
-	//доделать на сервере чтобы мог быть тull или цвет какой-то по умолчанию поставить
-	const onSaveSockHandler = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  //доделать на сервере чтобы мог быть тull или цвет какой-то по умолчанию поставить
+  const onSaveSockHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
-    
+
     if (!selectedColor) {
-      alert('Color not selected');
+      alert('Выберите цвет');
       return;
     }
 
     const addData = {
       colorId: selectedColor?.id,
       pictureId: selectedPicture?.id,
-      patternId: selectedPattern?.id
-    }
+      patternId: selectedPattern?.id,
+    };
     const response = await createSock(addData);
+    setSock(response);
+  };
 
-	}
+  const handlerChangeSock = async (): Promise<void> => {
+    if (!sock) {
+      alert('Носок не сохранен');
+      return;
+    }
+
+    const addData = {
+      colorId: selectedColor?.id || null,
+      pictureId: selectedPicture?.id || null,
+      patternId: selectedPattern?.id || null,
+    };
+
+    const response = await updateSock(sock.id, addData);
+    if (!response) {
+      alert('Изменения не сохранены');
+      return;
+    }
+
+    setSock(response);
+    alert('Изменения сохранены');
+  };
+
+  const handlerDropSock = async (): Promise<void> => {
+    if (!sock) {
+      alert('Носок не сохранен');
+      return;
+    }
+
+    const response = await deleteSock(sock.id);
+    if (response > 0) {
+      alert('Носок удален');
+      setSelectedColor(null);
+      setSelectedPicture(null);
+      setSelectedPattern(null);
+      setSock(null);
+    }
+  };
+
+  const handlerAddBasket = async (): Promise<void> => {
+    if (!sock) {
+      alert('Носок не сохранен');
+      return;
+    }
+    const sockForBasket = await getSockById(sock.id);
+
+    if (!sockForBasket) {
+      alert('Носок не найден');
+      return;
+    }
+    const basketData = {
+      sockId: sockForBasket?.id,
+      quantity: 1,
+      status: 'active',
+    };
+
+    console.log(sock);
+
+    console.log('sockForBasket', sockForBasket);
+
+    console.log(basketData);
+
+    const newBasket = await createBasket(basketData);
+
+    if (!newBasket) {
+      alert('Носок не добавлен в корзину');
+    } else {
+      alert('Носок успешно добавлен в корзину!');
+    }
+
+    setSelectedColor(null);
+    setSelectedPicture(null);
+    setSelectedPattern(null);
+    setSock(null);
+  };
 
   return (
     <div className={styles.socks_page}>
@@ -97,7 +178,7 @@ export default function SvgComponent() {
           >
             <path
               d="M444.368 319.916c-11.69-19.637-28.937-36.436-50.694-47.679l-90.071-46.594V0H49.666v302.921c.019 47.426 26.52 90.958 68.641 112.771l158.703 82.096C295.601 507.406 315.612 512 335.258 512a127.453 127.453 0 0 0 65.167-17.966c19.646-11.69 36.444-28.928 47.687-50.693 9.628-18.592 14.221-38.602 14.221-58.248a127.4 127.4 0 0 0-17.965-65.177z"
-              fill={selectedColor?.code || '#b3f9fa'}
+              fill={selectedColor?.code || '#e3ede8'}
             />
 
             <g data-name="Слой_2" opacity={0}>
@@ -213,63 +294,105 @@ export default function SvgComponent() {
           </div>
         </div>
         <div className={styles.panel_wrap}>
-          <h2>Socks</h2>
+          <h2>Носочек</h2>
 
-					<form onSubmit={onSaveSockHandler}>
-          <h3>Color:</h3>
-          <div className={styles.colorPanel}>
-            {colors.map((color) => (
-              <div
-                key={`${color.id}c`}
-                className={`${styles.colorBlock} ${
-                  selectedColor?.id === color.id ? styles.selected : ''
-                }`}
-                style={{ backgroundColor: color.code }}
-                onClick={() => handleColorClick(color)}
-              />
-            ))}
-					</div>
-					
-          <h3>Picture:</h3>
-          <div className={styles.picture_grid}>
-            {pictures.map((picture) => (
-              <div
-                key={picture.id}
-                className={`${styles.picture_item} ${
-                  selectedPicture?.id === picture.id ? styles.selected : ''
-                }`}
-                onClick={() => handlePictureClick(picture)}
-              >
-                <img
-                  src={`/images/pictures/${picture.picture_url}`}
-                  alt={picture.picture}
+          <form onSubmit={onSaveSockHandler}>
+            <h3>Цвет:</h3>
+            <div className={styles.colorPanel}>
+              {colors.map((color) => (
+                <div
+                  key={`${color.id}c`}
+                  className={`${styles.colorBlock} ${
+                    selectedColor?.id === color.id ? styles.selected : ''
+                  }`}
+                  style={{ backgroundColor: color.code }}
+                  onClick={() => handleColorClick(color)}
                 />
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <h3>Pattern:</h3>
-          <div className={styles.picture_grid}>
-            {patterns.map((pattern) => (
-              <div
-                key={pattern.id}
-                className={`${styles.picture_item} ${
-                  selectedPattern?.id === pattern.id ? styles.selected : ''
-                }`}
-                onClick={() => handlePatternClick(pattern)}
+            <h3>Картинка:</h3>
+            <div className={styles.picture_grid}>
+              {pictures.map((picture) => (
+                <div
+                  key={picture.id}
+                  className={`${styles.picture_item} ${
+                    selectedPicture?.id === picture.id ? styles.selected : ''
+                  }`}
+                  onClick={() => handlePictureClick(picture)}
+                >
+                  <img
+                    src={`/images/pictures/${picture.picture_url}`}
+                    alt={picture.picture}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <h3>Узор:</h3>
+            <div className={styles.picture_grid}>
+              {patterns.map((pattern) => (
+                <div
+                  key={pattern.id}
+                  className={`${styles.picture_item} ${
+                    selectedPattern?.id === pattern.id ? styles.selected : ''
+                  }`}
+                  onClick={() => handlePatternClick(pattern)}
+                >
+                  <img
+                    src={`/images/patterns/${pattern.pattern_url}`}
+                    alt={pattern.pattern}
+                  />
+                </div>
+              ))}
+            </div>
+              <div className={styles.buttons_wrap}>
+            <div className={styles.buttons_group}>
+            <button
+              type="button"
+              className={styles.save_button}
+              onClick={() => handlerButtonClear()}
+            >
+              Очистить
+            </button>
+
+            <button type="submit" className={styles.save_button}>
+              Сохранить
+              </button>
+            </div>
+            
+            
+            {sock && (
+              <div className={styles.buttons_group}>
+                <button
+                type="button"
+                onClick={() => handlerChangeSock()}
+                className={styles.save_button}
               >
-                <img
-                  src={`/images/patterns/${pattern.pattern_url}`}
-                  alt={pattern.pattern}
-                />
+                Изменить
+                </button>
+                <button
+                type="button"
+                onClick={() => handlerDropSock()}
+                className={styles.save_button}
+              >
+                Удалить
+              </button>
               </div>
-            ))}
-						</div>
-						
-						<button type='button' className={styles.save_button} onClick={() => handlerButtonClear()}>Clear</button>
+              
+            )}
 
-						<button type='submit' className={styles.save_button} >Save</button>
-					</form>
+            {sock && (
+              <button
+                type="button"
+                onClick={() => handlerAddBasket()}
+                className={styles.basket_button}
+              >
+                В корзину
+              </button>
+              )}
+              </div>
+          </form>
         </div>
       </div>
     </div>
