@@ -1,4 +1,4 @@
-const { Sock, User, Color, Pattern, Picture } = require('../../db/models');
+const { Sock, User, Color, Pattern, Picture, Favorite } = require('../../db/models');
 
 class SocksService {
   static async findAllSocksByUserId(userId) {
@@ -7,7 +7,7 @@ class SocksService {
       include: [
         {
           model: User,
-          attributes: ['id', 'email'], //email особо и не нужен
+          attributes: ['id', 'name']
         },
         {
           model: Color,

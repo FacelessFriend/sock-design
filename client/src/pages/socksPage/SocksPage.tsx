@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUsersSocks } from '../../services/api/socksApi/socksApi';
-import { getFavorites, addFavorite, deleteFavorite } from '../../services/api/favoriteApi/favoriteApi';
+import { addFavorite, deleteFavorite } from '../../services/api/favoriteApi/favoriteApi';
 import { createBasket } from '../../services/api/basketApi/basketApi';
 import SvgComponent from '../../components/SvgComponent/SvgComponent';
 import { FaHeart, FaRegHeart, FaShoppingCart, FaInfoCircle } from 'react-icons/fa';
 import styles from './SocksPage.module.scss';
 
-interface Sock {
+interface SockWithFavorite {
   id: number;
   Color?: {
     code: string;
@@ -18,11 +18,13 @@ interface Sock {
   Picture?: {
     picture_url: string;
   };
-}
-
-interface SockWithFavorite extends Sock {
   isFavorite: boolean;
   inCart: boolean;
+  SockFavorites?: Array<{
+    id: number;
+    user_id: number;
+    sock_id: number;
+  }>;
 }
 
 interface AllSocksPageProps {
@@ -45,31 +47,33 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
       setLoading(false);
       return;
     }
-
+  
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [socksData, favoritesData] = await Promise.all([
-          getUsersSocks(user.id),
-          getFavorites(user.id)
-        ]);
-
-        const favoriteSockIds = favoritesData.map(fav => fav.sock_id);
+        setError(null);
+        
+        const socksData = await getUsersSocks(user.id);
+        
+        if (!socksData) {
+          throw new Error('Не удалось загрузить данные о носках');
+        }
+  
         const socksWithFavorites = socksData.map(sock => ({
           ...sock,
-          isFavorite: favoriteSockIds.includes(sock.id),
+          isFavorite: sock.SockFavorites ? sock.SockFavorites.some(fav => fav.user_id === user.id) : false,
           inCart: false
         }));
-
+  
         setSocks(socksWithFavorites);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError('Ошибка при загрузке данных');
+        setError(error.message || 'Ошибка при загрузке данных');
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, [isAuth, user]);
 
@@ -81,25 +85,36 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
 
     try {
       if (isCurrentlyFavorite) {
-        const favorites = await getFavorites(user.id);
-        const favoriteToDelete = favorites.find(fav => fav.sock_id === sockId);
+        const sock = socks.find(s => s.id === sockId);
+        const favoriteId = sock?.SockFavorites?.find(fav => fav.user_id === user.id)?.id;
         
-        if (favoriteToDelete) {
-          await deleteFavorite(favoriteToDelete.id);
+        if (favoriteId) {
+          await deleteFavorite(favoriteId);
           setSocks(prevSocks => 
             prevSocks.map(sock => 
               sock.id === sockId 
-                ? { ...sock, isFavorite: false } 
+                ? { 
+                    ...sock, 
+                    isFavorite: false,
+                    SockFavorites: sock.SockFavorites?.filter(fav => fav.id !== favoriteId)
+                  } 
                 : sock
             )
           );
         }
       } else {
-        await addFavorite({ user_id: user.id, sock_id: sockId });
+        const newFavorite = await addFavorite({ user_id: user.id, sock_id: sockId });
         setSocks(prevSocks => 
           prevSocks.map(sock => 
             sock.id === sockId 
-              ? { ...sock, isFavorite: true } 
+              ? { 
+                  ...sock, 
+                  isFavorite: true,
+                  SockFavorites: [
+                    ...(sock.SockFavorites || []),
+                    { id: newFavorite.id, user_id: user.id, sock_id: sockId }
+                  ]
+                } 
               : sock
           )
         );
@@ -115,25 +130,27 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
       setError('Для добавления в корзину необходимо авторизоваться');
       return;
     }
-
+  
     try {
-      await createBasket({
-        socks_id: sockId,
+      const response = await createBasket({
+        sockId: sockId,
         quantity: 1,
         status: 'active',
         user_id: user.id
       });
-
-      setSocks(prevSocks => 
-        prevSocks.map(sock => 
-          sock.id === sockId 
-            ? { ...sock, inCart: true } 
-            : sock
-        )
-      );
+  
+      if (response) {
+        setSocks(prevSocks => 
+          prevSocks.map(sock => 
+            sock.id === sockId 
+              ? { ...sock, inCart: true } 
+              : sock
+          )
+        );
+      }
     } catch (error) {
       console.error('Error adding to cart:', error);
-      setError('Ошибка при добавлении в корзину');
+      setError(`Ошибка при добавлении в корзину: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -198,15 +215,7 @@ export default function AllSocksPage({ isAuth, user }: AllSocksPageProps) {
                     />
                   </button>
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDetailsClick(sock.id);
-                    }}
-                    className={styles.actionButton}
-                  >
-                    <FaInfoCircle className={styles.icon} />
-                  </button>
+                  
                 </div>
               </div>
             </div>

@@ -5,8 +5,7 @@ const authMiddleware = require('../../middlewares/authMiddleware');
 const socksRouter = require('express').Router();
 
 socksRouter.get('/', SocksController.getAllSocks);
-socksRouter.get('/:id',  SocksController.getSockById);
-// socksRouter.get('/:id', validateId, SocksController.getSockById);
+socksRouter.get('/:id', validateId, SocksController.getSockById);
 //ок ли эндпоинт
 socksRouter.get(
   '/user/:id',

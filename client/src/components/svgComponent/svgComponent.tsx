@@ -131,7 +131,9 @@ export default function SvgComponent() {
       return;
     }
     const sockForBasket = await getSockById(sock.id);
-
+    console.log(1,sock)
+    console.log(2,sockForBasket);
+    
     if (!sockForBasket) {
       alert('Носок не найден');
       return;
