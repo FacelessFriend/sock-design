@@ -15,17 +15,15 @@ interface BasketPageProrps {
     id: number;
     name: string;
     email: string;
-  }
+  };
 }
 
 export default function BasketPage({ user }: BasketPageProrps) {
-  
-  
   const [baskets, setBaskets] = useState<Basket[]>([]);
   const [inputsCount, setInputsCount] = useState<
     { id: number; quantity: number }[]
-    >([]);
-  
+  >([]);
+
   const id: number = user.id;
 
   const navigate = useNavigate();
@@ -70,8 +68,11 @@ export default function BasketPage({ user }: BasketPageProrps) {
   }
 
   const sumItems = useMemo(() => {
-    return inputsCount.reduce((sum, item) => sum + item.quantity, 0);
-  }, [inputsCount]);
+    return baskets.reduce((sum, basket) => {
+      const countItem = inputsCount.find((item) => item.id === basket.id);
+      return sum + (countItem?.quantity ?? 1);
+    }, 0);
+  }, [inputsCount, baskets]);
 
   async function onSendOrderHandler(
     e: React.FormEvent<HTMLFormElement>
@@ -80,9 +81,9 @@ export default function BasketPage({ user }: BasketPageProrps) {
     const order = baskets.map((basket, index) => {
       return `${index + 1}. Socks:
       art: ${basket.socks_id},
-      color: ${basket.Sock.color_id},
-      pattern: ${basket.Sock.pattern_id},
-      picture: ${basket.Sock.picture_id},
+      color: ${basket.Sock.color_id} || '',
+      pattern: ${basket.Sock.pattern_id} || '',
+      picture: ${basket.Sock.picture_id} || '',
       count: ${getCountItems(basket.id)}`;
     }, []);
 
@@ -126,15 +127,15 @@ export default function BasketPage({ user }: BasketPageProrps) {
                 <div className={styles.sock_wrap}>
                   <div>{basket.Sock.Color.color}</div>
                   <div>{basket.Sock.Color.code}</div>
-                  <div>{basket.Sock.Picture.picture}</div>
-                  <div>{basket.Sock.Pattern.pattern}</div>
+                  <div>{basket.Sock.Picture?.picture}</div>
+                  <div>{basket.Sock.Pattern?.pattern}</div>
                 </div>
                 <div className={styles.info_wrap}>
                   <div className={styles.info_text}>
                     <h4>
                       Socks, color: {basket.Sock.Color.color}, pattern:{' '}
-                      {basket.Sock.Pattern.pattern}, picture:{' '}
-                      {basket.Sock.Picture.picture}
+                      {basket.Sock.Pattern?.pattern || 'нет'}, picture:{' '}
+                      {basket.Sock.Picture?.picture || 'нет'}
                     </h4>
                     <Link
                       to={`/socks/${basket.socks_id}`}
