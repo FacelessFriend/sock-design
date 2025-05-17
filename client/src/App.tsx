@@ -7,6 +7,7 @@ import BasketPage from './pages/basketPage/basketPage';
 import ThankPage from './pages/thankPage/thankPage';
 import SvgComponent from './components/svgComponent/svgComponent';
 import Header from './pages/header/Header';
+import AllSocksPage from './pages/socksPage/SocksPage';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -60,6 +61,16 @@ function App() {
     <>
     <Header isAuth={isAuth} onLogout={handleLogout} />
     <Routes> 
+    <Route 
+  path="/socks" 
+  element={
+    isAuth ? (
+      <AllSocksPage isAuth={isAuth} user={user} />
+    ) : (
+      <Navigate to="/auth" replace />
+    )
+  } 
+/>
       <Route 
         path="/auth" 
         element={isAuth ? <Navigate to="/favorites" replace /> : <AuthPage onLoginSuccess={handleLoginSuccess} />} 

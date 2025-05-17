@@ -20,6 +20,7 @@ export async function getUsersSocks(userId: number): Promise<Sock[]> {
   try {
     const response = await $api.get<AllSocksApiResponse>(
       `/socks/user/${userId}`
+      // `/socks/user/1`
     );
 
     if (response.status === 200 && Array.isArray(response.data.data)) {
