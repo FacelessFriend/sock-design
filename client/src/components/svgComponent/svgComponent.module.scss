@@ -1,0 +1,157 @@
+.sock_wrap {
+  position: relative;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+	width: 80%;
+  min-width: 400px;
+  aspect-ratio: 1/1;
+  border: 2px solid black;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.sock {
+  display: block;
+  position: absolute;
+  top: 15%;
+  left: 15%;
+}
+
+.pattern {
+  display: block;
+  position: absolute;
+  width: 40%;
+  // height: 100%;
+  top: 30%;
+  left: 23%;
+	
+}
+
+.picture {
+  display: block;
+  position: absolute;
+  width: 40%;
+  // height: 100%;
+  // top: 40%;
+  left: 45%;
+	top: 5%;
+	opacity: 0;
+
+	&Visible {
+		opacity: 1;
+	}
+}
+
+.picture_wrap {
+	width: 100%;
+	height:50%;
+	// border: 1px solid black;
+	position: relative;
+	border: 2px solid rgb(207, 33, 33);
+
+}
+
+.pattern_wrap {
+	width: 100%;
+	height: 50%;
+	// border: 1px solid black;
+	position: relative;
+  // left: 10%;
+	border: 2px solid rgb(23, 109, 229);
+}
+
+.picture_orange {
+	  display: block;
+  position: absolute;
+  width: 95px;
+  // height: 100%;
+  // top: 40%;
+  left: 16%;
+	top: 25%;
+	opacity: 1;
+}
+
+.panel_wrap {
+	border: 2px solid rgb(202, 182, 31);
+	width: 30%;
+	min-width: 200px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	// text-align: center;
+	padding: 10px;
+	gap: 20px
+}
+
+.socks_page {
+	display: flex;
+	height: 100vh;
+	border: 2px solid rgb(207, 33, 33);
+	min-width: 600px;
+}
+
+.img_area {
+	width: 70%;
+	min-width: 400px;
+	height: 100%;
+	border: 2px solid rgb(37, 195, 100);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+}
+
+
+.colorPanel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.colorBlock {
+  width: 100%;
+  height: 60px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.selected {
+  border: 2px solid rgb(106, 105, 105);
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.picture_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.picture_item {
+  cursor: pointer;
+  border: 2px solid #ddd;
+  padding: 10px;
+  transition: all 0.2s;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &.selected {
+    border-color: #000;
+    background-color: #f0f0f0;
+  }
+}
+
+h3 {
+  margin: 15px 0 10px;
+  font-size: 18px;
+}

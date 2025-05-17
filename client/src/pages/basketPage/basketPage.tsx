@@ -10,16 +10,28 @@ import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import DeleteOutline from '@mui/icons-material/DeleteOutline';
 
-export default function BasketPage() {
+interface BasketPageProrps {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  }
+}
+
+export default function BasketPage({ user }: BasketPageProrps) {
+  
+  
   const [baskets, setBaskets] = useState<Basket[]>([]);
   const [inputsCount, setInputsCount] = useState<
     { id: number; quantity: number }[]
-  >([]);
+    >([]);
+  
+  const id: number = user.id;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUsersBaskets().then((response) => {
+    getUsersBaskets(id).then((response) => {
       setBaskets(response);
       setInputsCount(
         response?.map((basket) => {

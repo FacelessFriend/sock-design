@@ -9,8 +9,8 @@ basketRouter.get('/:id', validateId, BasketController.getBasketById);
 //ок ли эндпоинт
 basketRouter.get(
   //правка
-  // '/user/:id',
-  '/user',
+  '/user/:id',
+  // '/user',
   validateId,
   authMiddleware,
   BasketController.getAllUsersBaskets

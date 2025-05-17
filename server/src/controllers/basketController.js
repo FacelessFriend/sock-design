@@ -22,12 +22,12 @@ class BasketController {
   static async getAllUsersBaskets(req, res) {
     try {
       // правка
-      // const id = req.validatedId;
+      const id = req.validatedId;
       // console.log('id server', id);
 
       const userId = res.locals.user.id;
 
-      if (!userId) {
+      if (userId !== id) {
         return res.status(403).json({
           message: 'Forbidden for this user',
           data: null,
