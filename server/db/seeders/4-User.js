@@ -16,6 +16,11 @@ module.exports = {
           email: 'user2@user2',
           password: '1',
         },
+        {
+          name: 'User3',
+          email: 'user3@user3',
+          password: '1',
+        },
       ],
       {}
     );

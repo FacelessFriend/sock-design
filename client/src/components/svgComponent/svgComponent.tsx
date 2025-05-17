@@ -6,7 +6,9 @@ import type {
   Picture,
 } from '../../services/api/socksApi/types';
 import {
+	createSock,
   getAllColors,
+  getAllPatterns,
   getAllPictures,
 } from '../../services/api/socksApi/socksApi';
 
@@ -17,6 +19,9 @@ export default function SvgComponent() {
 
   const [colors, setColors] = useState<Color[]>([]);
   const [pictures, setPictures] = useState<Picture[]>([]);
+  const [patterns, setPatterns] = useState<Pattern[]>([]);
+
+  const [sock, setSock] = useState(null);
 
   async function getColors(): Promise<void> {
     const response = await getAllColors();
@@ -28,9 +33,15 @@ export default function SvgComponent() {
     setPictures(response);
   }
 
+  async function getPatterns(): Promise<void> {
+    const response = await getAllPatterns();
+    setPatterns(response);
+  }
+
   useEffect(() => {
     getColors();
     getPictures();
+    getPatterns();
   }, []);
 
   const handleColorClick = (color: Color) => {
@@ -41,13 +52,42 @@ export default function SvgComponent() {
     setSelectedPicture(picture);
   };
 
+  const handlePatternClick = (pattern: Pattern) => {
+    setSelectedPattern(pattern);
+	};
+
+	const handlerButtonClear = () => {
+		setSelectedColor(null);
+		setSelectedPicture(null);
+		setSelectedPattern(null);
+	}
+	
+
+	//доделать на сервере чтобы мог быть тull или цвет какой-то по умолчанию поставить
+	const onSaveSockHandler = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    
+    if (!selectedColor) {
+      alert('Color not selected');
+      return;
+    }
+
+    const addData = {
+      colorId: selectedColor?.id,
+      pictureId: selectedPicture?.id,
+      patternId: selectedPattern?.id
+    }
+    const response = await createSock(addData);
+
+	}
+
   return (
     <div className={styles.socks_page}>
       <div className={styles.img_area}>
         <div className={styles.sock_wrap}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            xml:space="preserve"
+            xmlSpace="preserve"
             width="80%"
             height="80%"
             viewBox="0 0 512 512"
@@ -125,13 +165,21 @@ export default function SvgComponent() {
           <div className={styles.pattern_wrap}>
             <img
               src="/images/patterns/pat_winter_blue.svg"
-              alt=""
-              className={styles.pattern}
+              alt="pat_winter_blue"
+              className={`${styles.pattern} ${
+                selectedPattern?.pattern_url === 'pat_winter_blue.svg'
+                  ? styles.pictureVisible
+                  : ''
+              }`}
             />
             <img
               src="/images/patterns/pat_pink.svg"
-              alt=""
-              className={styles.pattern}
+              alt="pat_pink"
+              className={`${styles.pattern} ${
+                selectedPattern?.pattern_url === 'pat_pink.svg'
+                  ? styles.pictureVisible
+                  : ''
+              }`}
             />
           </div>
           <div className={styles.picture_wrap}>
@@ -139,7 +187,7 @@ export default function SvgComponent() {
               src="/images/pictures/pic_winter_blue.svg"
               alt=""
               className={`${styles.picture} ${
-                selectedPicture?.picture_url === "pic_winter_blue.svg"
+                selectedPicture?.picture_url === 'pic_winter_blue.svg'
                   ? styles.pictureVisible
                   : ''
               }`}
@@ -157,7 +205,7 @@ export default function SvgComponent() {
               src="/images/pictures/pic_heart_orange.svg"
               alt=""
               className={`${styles.picture} ${
-                selectedPicture?.picture_url === "pic_heart_orange.svg"
+                selectedPicture?.picture_url === 'pic_heart_orange.svg'
                   ? styles.pictureVisible
                   : ''
               }`}
@@ -167,6 +215,7 @@ export default function SvgComponent() {
         <div className={styles.panel_wrap}>
           <h2>Socks</h2>
 
+					<form onSubmit={onSaveSockHandler}>
           <h3>Color:</h3>
           <div className={styles.colorPanel}>
             {colors.map((color) => (
@@ -179,7 +228,8 @@ export default function SvgComponent() {
                 onClick={() => handleColorClick(color)}
               />
             ))}
-          </div>
+					</div>
+					
           <h3>Picture:</h3>
           <div className={styles.picture_grid}>
             {pictures.map((picture) => (
@@ -197,6 +247,29 @@ export default function SvgComponent() {
               </div>
             ))}
           </div>
+
+          <h3>Pattern:</h3>
+          <div className={styles.picture_grid}>
+            {patterns.map((pattern) => (
+              <div
+                key={pattern.id}
+                className={`${styles.picture_item} ${
+                  selectedPattern?.id === pattern.id ? styles.selected : ''
+                }`}
+                onClick={() => handlePatternClick(pattern)}
+              >
+                <img
+                  src={`/images/patterns/${pattern.pattern_url}`}
+                  alt={pattern.pattern}
+                />
+              </div>
+            ))}
+						</div>
+						
+						<button type='button' className={styles.save_button} onClick={() => handlerButtonClear()}>Clear</button>
+
+						<button type='submit' className={styles.save_button} >Save</button>
+					</form>
         </div>
       </div>
     </div>

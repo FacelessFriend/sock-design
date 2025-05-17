@@ -19,7 +19,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       color_id: {
-        allowNull: false,
+        // allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Colors',

@@ -3,13 +3,14 @@
   // display: flex;
   // justify-content: center;
   // align-items: center;
-	width: 80%;
+	width: 60%;
   min-width: 400px;
   aspect-ratio: 1/1;
   border: 2px solid black;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	flex: 1;
 }
 
 .sock {
@@ -26,6 +27,11 @@
   // height: 100%;
   top: 30%;
   left: 23%;
+	opacity: 0;
+
+	&Visible {
+		opacity: 1;
+	}
 	
 }
 
@@ -87,15 +93,15 @@
 
 .socks_page {
 	display: flex;
-	height: 100vh;
+	height: 100%;
 	border: 2px solid rgb(207, 33, 33);
 	min-width: 600px;
 }
 
 .img_area {
-	width: 70%;
+	width: 100%;
 	min-width: 400px;
-	height: 100%;
+	height: 80%;
 	border: 2px solid rgb(37, 195, 100);
 	display: flex;
 	justify-content: center;
@@ -119,7 +125,7 @@
 }
 
 .selected {
-  border: 2px solid rgb(106, 105, 105);
+  border: 2px solid #0181f1;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
 
@@ -146,7 +152,7 @@
   }
 
   &.selected {
-    border-color: #000;
+    border-color: #0181f1;
     background-color: #f0f0f0;
   }
 }
@@ -154,4 +160,12 @@
 h3 {
   margin: 15px 0 10px;
   font-size: 18px;
+}
+
+.save_button {
+	display: block;
+	margin-top: 30px;
+	height: 30px;
+	width: 100px;
+	cursor: pointer;
 }
